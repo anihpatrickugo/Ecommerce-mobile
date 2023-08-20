@@ -1,7 +1,8 @@
-import React from 'react'
 import {StyleSheet, View , Text, Image, Dimensions, TouchableOpacity}from 'react-native'
+import { SlideProps } from 'types/onboardingSlide'
 
-const OnboardingItem = ({item}:any) => {
+
+const OnboardingItem = ({item}: {item: SlideProps}):JSX.Element => {
   return (
     <View style={styles.container}>
         <Image style={styles.onboardingImage} source={item.image}/>

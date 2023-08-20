@@ -1,8 +1,12 @@
+import { FC } from 'react'
 import {StyleSheet, View , Text, Image, Dimensions, TouchableOpacity}from 'react-native'
 import { SlideProps } from 'types/onboardingSlide'
 
+interface Props {
+    item: SlideProps
+}
 
-const OnboardingItem = ({item}: {item: SlideProps}):JSX.Element => {
+const OnboardingItem: FC<Props> = ({item}):JSX.Element => {
   return (
     <View style={styles.container}>
         <Image style={styles.onboardingImage} source={item.image}/>

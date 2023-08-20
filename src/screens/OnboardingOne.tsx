@@ -4,6 +4,8 @@ import slides from 'const/onboardingSlide.js'
 import OnboardingItem from 'components/onboardingItem';
 
 const OnboardingOne = ():JSX.Element => {
+    
+
     return (
         <View style={styles.container}>
             <StatusBar style="light" />

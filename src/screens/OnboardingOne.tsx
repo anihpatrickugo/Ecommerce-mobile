@@ -1,5 +1,7 @@
-import { StyleSheet, Text, View, Image} from 'react-native';
+import { StyleSheet, FlatList, Text, View, Image} from 'react-native';
 import { StatusBar } from 'expo-status-bar';
+import slides from 'const/onboardingSlide.js'
+import OnboardingItem from 'components/onboardingItem';
 
 const OnboardingOne = ():JSX.Element => {
     return (
@@ -18,16 +20,13 @@ const OnboardingOne = ():JSX.Element => {
                       <Text style={styles.subTitle}>Get any kind of electronics in one go</Text>
             </View>
 
-            <Image style={styles.onboardingImage}source={require('images/contents/onboarding1.png')}/>
-
-            <View style={styles.footer}>
-            <Text style={styles.footerHeading}>Purchase Online !!</Text>
-            <Text style={styles.footerParagraph}>
-            Welcome to the no.1 store where you can shop for anykind 
-            of accesories, gadgets or electronics.
-             </Text>
-             <Image style={styles.footerIcon} source={require('icons/First-Select.png')}/>
-            </View>
+            <FlatList 
+              data={slides} 
+              pagingEnabled 
+              bounces={false} 
+              horizontal 
+              showsHorizontalScrollIndicator={false} 
+              renderItem={({item})=> <OnboardingItem item={item}/>}/>
           
         </View>
       );
@@ -76,30 +75,6 @@ const styles = StyleSheet.create({
         fontSize: 12,
     
     },
-
-    onboardingImage: {
-        width: "80%",
-        alignSelf: "center"
-    },
-
-    footer: {
-        width: "100%",
-        paddingHorizontal: 10,
-        alignItems:  'center'
-    },
-
-    footerHeading: {
-        fontSize: 24,
-        fontWeight: '700'
-    },
-   
-    footerParagraph: {
-        fontSize: 14,
-        textAlign:  'center'
-    },
-    footerIcon: {
-        marginVertical: 5
-    }
    
   });
 

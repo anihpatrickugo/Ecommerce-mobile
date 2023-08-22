@@ -1,8 +1,9 @@
+import { ImageSourcePropType } from "react-native"
 
 export interface SlideProps {
     id: number,
-    image: any,
+    image: ImageSourcePropType
     title: string,
     description: string,
-    icon: any
+    icon: ImageSourcePropType
   }

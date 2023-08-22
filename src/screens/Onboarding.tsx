@@ -1,13 +1,18 @@
-import { StyleSheet, FlatList, Text, View, Image} from 'react-native';
+import { StyleSheet, SafeAreaView, FlatList, Text, View, Image, TouchableOpacity} from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import slides from 'const/onboardingSlide.js'
 import OnboardingItem from 'components/onboardingItem';
+import { FC } from 'react';
 
-const OnboardingOne = ():JSX.Element => {
-    
+
+interface Props {
+    navigation: any
+}
+
+const Onboarding: FC<Props> = ({navigation}):JSX.Element => {
 
     return (
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
             <StatusBar style="light" />
             <View style={styles.top}>
                  <Image source={require('images/backgrounds/Shape1.png')}/>
@@ -29,8 +34,13 @@ const OnboardingOne = ():JSX.Element => {
               horizontal 
               showsHorizontalScrollIndicator={false} 
               renderItem={({item})=> <OnboardingItem item={item}/>}/>
+
+              {/* getstarted button */}
+             <TouchableOpacity style={styles.loginButton} onPress={()=>navigation.navigate('Authentication')}>
+                   <Text style={styles.loginButtonText}>Get Started</Text>
+             </TouchableOpacity>
           
-        </View>
+        </SafeAreaView>
       );
 }
 
@@ -38,7 +48,7 @@ const styles = StyleSheet.create({
     container: {
       flex: 1,
       backgroundColor: '#fff',
-    //   alignItems: 'center',
+      alignItems: 'center',
     },
     top:{
         marginTop: -140,
@@ -77,7 +87,24 @@ const styles = StyleSheet.create({
         fontSize: 12,
     
     },
+
+    loginButton: {
+        width: "50%",
+        // paddingHorizontal: 10,
+        paddingVertical: 10,
+        backgroundColor: "#037EE6",
+        marginVertical: 10,
+        borderRadius: 10,
+    
+        
+    },
+
+    loginButtonText:{
+        fontWeight: "700",
+        textAlign: 'center',
+        
+    },
    
   });
 
-export default OnboardingOne
+export default Onboarding;

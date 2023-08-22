@@ -1,5 +1,5 @@
 import { FC } from 'react'
-import {StyleSheet, View , Text, Image, Dimensions, TouchableOpacity}from 'react-native'
+import {StyleSheet, View , Text, Image, Dimensions}from 'react-native'
 import { SlideProps } from 'types/onboardingSlide'
 
 interface Props {
@@ -13,12 +13,6 @@ const OnboardingItem: FC<Props> = ({item}):JSX.Element => {
         <View style={styles.footer}>
         <Text style={styles.footerHeading}>{item.title}</Text>
         <Text style={styles.footerParagraph}>{item.description}</Text>
-
-        {/* getstarted button */}
-        <TouchableOpacity style={styles.loginButton}>
-            <Text style={styles.loginButtonText}>Get Started</Text>
-        </TouchableOpacity>
-
         <Image style={styles.footerIcon} source={item.icon}/>
        </View>
     </View>
@@ -34,7 +28,7 @@ const styles = StyleSheet.create({
 
     },
     onboardingImage: {
-        marginTop: -120,
+        marginTop: -80,
         width: "50%",
         alignSelf: "center",
         objectFit: 'contain',
@@ -42,9 +36,10 @@ const styles = StyleSheet.create({
 
     footer: {
         width: "100%",
-        marginTop: -70,
+        marginTop: -60,
         paddingHorizontal: 10,
-        alignItems:  'center'
+        alignItems:  'center',
+       
     },
 
     footerHeading: {
@@ -60,21 +55,8 @@ const styles = StyleSheet.create({
         marginVertical: 15
     },
 
-    loginButton: {
-        paddingHorizontal: 30,
-        paddingVertical: 10,
-        backgroundColor: "#037EE6",
-        marginVertical: 10,
-        borderRadius: 10,
-        
-    },
-
-    loginButtonText:{
-        fontWeight: "700"
-    },
-
     footerIcon: {
-        marginVertical: 10
+        marginVertical: 5
     }
 })
 export default OnboardingItem;

@@ -33,7 +33,7 @@ const Onboarding: FC<Props> = ({navigation}):JSX.Element => {
               bounces={false} 
               horizontal 
               showsHorizontalScrollIndicator={false} 
-              renderItem={({item})=> <OnboardingItem item={item}/>}/>
+              renderItem={({item})=> <OnboardingItem key={item.id} item={item}/>}/>
 
               {/* getstarted button */}
              <TouchableOpacity style={styles.loginButton} onPress={()=>navigation.navigate('Authentication')}>

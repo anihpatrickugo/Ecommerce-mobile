@@ -1,7 +1,7 @@
 
 import {FC, useState} from 'react'
 import { View, Text , StyleSheet, SafeAreaView, Image, StatusBar, TouchableOpacity} from 'react-native'
-import AuthInputForm from 'components/AuthInputForm'
+import AuthInputForm from 'components/authInputForm'
 
 interface Props {
     navigation: any
@@ -48,7 +48,7 @@ const Authentication: FC<Props> = ({navigation}):JSX.Element => {
        {/* button */}
        <TouchableOpacity
         style={styles.action}
-        onPress={() => navigation.navigate("Home")}
+        onPress={() => navigation.navigate("Products")}
       >
         <Text style={styles.actionText}>{page === 'login'? "Login": "Register"}</Text>
       </TouchableOpacity>
@@ -66,7 +66,6 @@ const styles = StyleSheet.create({
         flex: 1,
         paddingVertical: StatusBar.currentHeight, 
         alignItems: "center", 
-        position: "relative",
 
     },
     headingText: {
@@ -130,8 +129,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         marginVertical: 20,
-        position: "absolute",
-        bottom: 20
+        position: "relative",
+        bottom: 20,
    
     },
 

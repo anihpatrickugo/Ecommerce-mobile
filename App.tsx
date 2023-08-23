@@ -2,6 +2,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Onboarding from 'screens/Onboarding';
 import Authentication from 'screens/Authentication';
+import ProductsScreen from 'screens/ProductsScreen';
 
 
 
@@ -15,6 +16,8 @@ export default function App() {
         <Stack.Screen name="Home" component={Onboarding} />
 
         <Stack.Screen name="Authentication" component={Authentication} />
+
+        <Stack.Screen name="Products" component={ProductsScreen} />
         
       </Stack.Navigator>
     </NavigationContainer>

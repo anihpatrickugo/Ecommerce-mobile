@@ -6,6 +6,7 @@ import {
     StatusBar,
     TouchableOpacity, 
     View, 
+    Text,
     TextInput,
     FlatList
 } from 'react-native'
@@ -73,6 +74,7 @@ const ProductsScreen:FC<Props> = ():JSX.Element => {
 
       {/* Trending prodiucts */}
       <View style={styles.trending}>
+      <Text style={styles.trendingTitle}>Trending Products</Text>
       <FlatList 
               data={products} 
               pagingEnabled 
@@ -83,8 +85,38 @@ const ProductsScreen:FC<Props> = ():JSX.Element => {
 
       </View>
 
+    {/* footer */}
+    <View style={styles.footer}>
 
 
+       <TouchableOpacity>
+          <Image
+            style={styles.inputIcon}
+            source={require("../icons/home.png")}
+            height={25}
+            width={25}
+          />
+          </TouchableOpacity>
+
+          <TouchableOpacity>
+          <Image
+            style={styles.inputIcon}
+            source={require("../icons/cart.png")}
+            height={25}
+            width={25}
+          />
+          </TouchableOpacity>
+
+          <TouchableOpacity>
+          <Image
+            style={styles.inputIcon}
+            source={require("../icons/profile2.png")}
+            height={25}
+            width={25}
+          />
+          </TouchableOpacity>
+    </View>
+    
     </SafeAreaView>
   )
 }
@@ -94,6 +126,7 @@ const styles = StyleSheet.create({
         flex: 1,
         paddingVertical: StatusBar.currentHeight, 
         alignItems: "center", 
+        position:"relative",
 
     },
     headerLogoContainer:{
@@ -147,10 +180,29 @@ const styles = StyleSheet.create({
 
       trending: {
         width: "100%",
-        height: 220,
+        height: 250,
         marginVertical: 10,
         alignItems: "center", 
       },
+
+      trendingTitle: {
+        alignSelf: "flex-start",
+        fontWeight: "700",
+        marginHorizontal: 20,
+        marginVertical: 10
+      },
+
+      footer: {
+        width: "90%",
+        height: 60,
+        backgroundColor: "#037EEE",
+        borderRadius: 30,
+        position: "absolute",
+        bottom: 5,
+        flexDirection: "row",
+        justifyContent: "space-around",
+        alignItems: 'center'
+      }
 
 
 })

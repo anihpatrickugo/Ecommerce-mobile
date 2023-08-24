@@ -7,5 +7,5 @@ export default interface ProductProps {
     price: number,
     description: string,
     categories?: [],
-    discount?: number,
+    discount? : number ,
 }

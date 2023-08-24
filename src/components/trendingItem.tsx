@@ -10,8 +10,13 @@ const TrendingItem: FC<Props> = ({item}):JSX.Element => {
   return (
     <TouchableOpacity style={styles.containner}>
 
-        { item.discount && item.discount > 0 && (<Text style={styles.discount}>{`-${item.discount}%`}</Text>)}
-        
+      {/* discount label  */}
+      {item.description 
+      && typeof(item.discount) !== 'undefined' 
+      && item.discount > 0 
+      && (<Text style={styles.discount}>{`-${item.discount}%`}</Text>)}
+   
+    
 
         <Image
             style={styles.trendingImage}

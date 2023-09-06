@@ -3,12 +3,13 @@ import {TouchableOpacity, Text, StyleSheet, Image } from 'react-native'
 import ProductProps from 'types/products'
 
 interface Props {
-   item: ProductProps
+   item: ProductProps,
+   navigation: any
 }
 
-const TrendingItem: FC<Props> = ({item}):JSX.Element => {
+const TrendingItem: FC<Props> = ({item, navigation}):JSX.Element => {
   return (
-    <TouchableOpacity style={styles.containner}>
+    <TouchableOpacity style={styles.containner}  onPress={()=>navigation.navigate('Detail', {item})}>
 
       {/* discount label  */}
       {item.description 

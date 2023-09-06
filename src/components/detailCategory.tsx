@@ -8,7 +8,7 @@ interface Props {
  
 }
 
-const CategoryItem: FC<Props> = ({id, name}): JSX.Element => {
+const DetailCategory: FC<Props> = ({id, name}): JSX.Element => {
   return (
     <TouchableOpacity style={[styles.containner, styles.shadowProp]}>
       <Text style={styles.text}>{name}</Text>
@@ -20,9 +20,10 @@ const CategoryItem: FC<Props> = ({id, name}): JSX.Element => {
 const styles = StyleSheet.create({
     containner: {
         marginHorizontal: 10,
-        backgroundColor: "white",
+        backgroundColor: "#F0F0F0",
         justifyContent: "center",
-        paddingHorizontal: 20,
+        paddingHorizontal: 10,
+        height: 30,
         borderRadius: 30, 
     },
 
@@ -37,4 +38,4 @@ const styles = StyleSheet.create({
         color: "#037EEE"
     }
 })
-export default CategoryItem;
+export default DetailCategory;

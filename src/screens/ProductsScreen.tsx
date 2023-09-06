@@ -15,12 +15,13 @@ import CategoryItem from 'components/categoryItem'
 import categories from 'const/categories'
 import products from 'const/products'
 import TrendingItem from 'components/trendingItem'
+import { NativeStackScreenProps } from '@react-navigation/native-stack'
 
 interface Props {
-
+  navigation: any
 }
 
-const ProductsScreen:FC<Props> = ():JSX.Element => {
+const ProductsScreen:FC<Props> = ({navigation}):JSX.Element => {
   return (
     <SafeAreaView style={styles.containner}>
         {/* header */}
@@ -81,7 +82,7 @@ const ProductsScreen:FC<Props> = ():JSX.Element => {
               bounces={false} 
               horizontal 
               showsHorizontalScrollIndicator={false} 
-              renderItem={({item})=> <TrendingItem key={item.id} item={item}/>}/>
+              renderItem={({item})=> <TrendingItem key={item.id} item={item} navigation={navigation}/>}/>
 
       </View>
 

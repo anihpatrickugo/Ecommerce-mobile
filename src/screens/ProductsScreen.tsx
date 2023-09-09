@@ -99,7 +99,7 @@ const ProductsScreen:FC<Props> = ({navigation}):JSX.Element => {
           />
           </TouchableOpacity>
 
-          <TouchableOpacity>
+          <TouchableOpacity onPress={()=>navigation.navigate('Cart')}>
           <Image
             style={styles.inputIcon}
             source={require("../icons/cart.png")}

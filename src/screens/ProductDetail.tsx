@@ -14,6 +14,7 @@ import {
 import DetailCategory from 'components/detailCategory'
 import ProductProps from 'types/products'
 import categories from 'const/categories'
+import products from 'const/products'
 
 interface  Props {
   route: any,
@@ -35,7 +36,7 @@ const ProductDetail:FC<Props> = ({route, navigation}):JSX.Element => {
       {/* backbutton and arrow */}
       <View style={styles.backAndArrow}>
 
-      <TouchableOpacity onPress={()=>navigation.navigate('Products')}>
+      <TouchableOpacity onPress={()=>navigation.goBack()}>
           <Image
             style={styles.icon}
             source={require("../icons/arrow-left.png")}
@@ -44,7 +45,7 @@ const ProductDetail:FC<Props> = ({route, navigation}):JSX.Element => {
           />
       </TouchableOpacity>
 
-      <TouchableOpacity>
+      <TouchableOpacity onPress={()=>navigation.navigate('Cart', {item:products})}>
           <Image
             style={styles.icon}
             source={require("../icons/heart.png")}
@@ -85,28 +86,6 @@ const ProductDetail:FC<Props> = ({route, navigation}):JSX.Element => {
               horizontal 
               showsHorizontalScrollIndicator={false} 
               renderItem={({item})=> <DetailCategory key={item.id} id={item.id} name={item.name}/>}/>
-
-      </View>
-
-      {/* quantity */}
-      <View style={styles.quantity}>
-
-      <TouchableOpacity style={styles.editQuantity}>
-        <Text style={styles.editQuantityText}>-</Text>
-      </TouchableOpacity>
-
-
-      <TextInput
-            style={styles.quantityValue}
-            onChangeText={()=>{}}
-            value={'1'}
-            placeholder="Search"
-            keyboardType="default"
-          />
-
-      <TouchableOpacity style={styles.editQuantity}>
-        <Text style={styles.editQuantityText}>+</Text>
-      </TouchableOpacity>
 
       </View>
      

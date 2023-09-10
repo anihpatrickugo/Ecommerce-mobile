@@ -5,6 +5,7 @@ import Authentication from 'screens/Authentication';
 import ProductsScreen from 'screens/ProductsScreen';
 import ProductDetail from 'screens/ProductDetail';
 import CartScreen from 'screens/CartScreen';
+import CheckoutScreen from 'screens/CheckoutScreen';
 
 
 
@@ -24,6 +25,8 @@ export default function App() {
         <Stack.Screen name="Detail" component={ProductDetail} />
 
         <Stack.Screen name="Cart" component={CartScreen} />
+        
+        <Stack.Screen name="Checkout" component={CheckoutScreen} />
         
       </Stack.Navigator>
     </NavigationContainer>

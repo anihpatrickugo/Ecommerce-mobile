@@ -11,7 +11,7 @@ import {
   TextInput,
   FlatList
 } from 'react-native'
-import CartItem from 'components/cartItem'
+import CartItem from '../components/cartItem'
 import products from 'const/products'
 
 
@@ -98,7 +98,7 @@ const CartScreen:FC<Props> = ({navigation}):JSX.Element => {
         
 
       {/* button */}
-      <TouchableOpacity style={styles.button}>
+      <TouchableOpacity style={styles.button} onPress={()=>navigation.navigate('Checkout')}>
         <Text style={styles.buttonText}>Proceed To Checkout</Text>
       </TouchableOpacity>
            

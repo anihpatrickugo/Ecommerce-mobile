@@ -6,6 +6,8 @@ import ProductsScreen from 'screens/ProductsScreen';
 import ProductDetail from 'screens/ProductDetail';
 import CartScreen from 'screens/CartScreen';
 import CheckoutScreen from 'screens/CheckoutScreen';
+import ProfileScreen from 'screens/ProfileScreen';
+import OrderScreen from 'screens/OrdersScreen';
 
 
 
@@ -27,6 +29,10 @@ export default function App() {
         <Stack.Screen name="Cart" component={CartScreen} />
         
         <Stack.Screen name="Checkout" component={CheckoutScreen} />
+
+        <Stack.Screen name="Profile" component={ProfileScreen} />
+
+        <Stack.Screen name="Orders" component={OrderScreen} />
         
       </Stack.Navigator>
     </NavigationContainer>

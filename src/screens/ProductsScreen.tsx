@@ -108,7 +108,7 @@ const ProductsScreen:FC<Props> = ({navigation}):JSX.Element => {
           />
           </TouchableOpacity>
 
-          <TouchableOpacity>
+          <TouchableOpacity  onPress={()=>navigation.navigate('Profile')}>
           <Image
             style={styles.inputIcon}
             source={require("../icons/profile2.png")}

@@ -8,8 +8,14 @@ import {
   View, 
   Image,
   TouchableOpacity,
+  Alert
  
 } from 'react-native'
+import * as SecureStore from 'expo-secure-store';
+
+import type { RootState } from 'redux/store'
+import { useSelector, useDispatch } from 'react-redux'
+// import { decrement, increment } from 'redux/authSlice'
 
 
 interface  Props {
@@ -17,6 +23,34 @@ interface  Props {
 }
 
 const ProfileScreen:FC<Props> = ({navigation}):JSX.Element => {
+
+  const user = useSelector((state: RootState) => state.user)
+  const dispatch = useDispatch()
+
+
+  const logout = () => {
+
+    Alert.alert('Logging out', 'Are you sure you want to logout?', [
+     
+      {
+        text: 'No',
+        onPress: () => null,
+        style: 'cancel',
+      },
+
+      {
+        text: 'Yes',
+        onPress: () => {
+          SecureStore.deleteItemAsync("userToken")
+          navigation.reset({
+              routes: [{ name: 'Authentication' }],
+            });
+            
+          
+        },
+      }
+    ]);
+  }
      
      
 
@@ -54,8 +88,8 @@ const ProfileScreen:FC<Props> = ({navigation}):JSX.Element => {
 
         {/* text */}
         <View style={styles.profileDetailContainnner}>
-            <Text style={styles.profileName}>Ugochukwu Patrick</Text>
-            <Text style={styles.profileEmail}>iampatrickugo@gmail.com</Text>
+            <Text style={styles.profileName}>helkdkdk</Text>
+            <Text style={styles.profileEmail}>nxnnxnnx</Text>
         </View>
 
       </TouchableOpacity>
@@ -116,7 +150,7 @@ const ProfileScreen:FC<Props> = ({navigation}):JSX.Element => {
             <Text style={styles.linkName}>Talk To Our Support</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.link}>
+        <TouchableOpacity style={styles.link} onPress={logout}>
             <View style={styles.linkIconContainner}>
               <Image
                 style={styles.linkIcon}

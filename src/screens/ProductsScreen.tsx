@@ -1,4 +1,4 @@
-import {FC} from 'react'
+import {FC, useLayoutEffect} from 'react'
 import { 
     SafeAreaView, 
     StyleSheet, 
@@ -10,6 +10,7 @@ import {
     TextInput,
     FlatList
 } from 'react-native'
+import * as SecureStore from 'expo-secure-store';
 import { Formik } from 'formik'
 import CategoryItem from 'components/categoryItem'
 import categories from 'const/categories'
@@ -22,6 +23,7 @@ interface Props {
 }
 
 const ProductsScreen:FC<Props> = ({navigation}):JSX.Element => {
+
   return (
     <SafeAreaView style={styles.containner}>
         {/* header */}

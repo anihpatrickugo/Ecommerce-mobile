@@ -1,23 +1,31 @@
 import {FC} from 'react'
 import {useState} from 'react'
-import { Formik } from 'formik'
 import {View, Image, TextInput, TouchableOpacity, StyleSheet } from 'react-native'
 
-interface Props {
-    page: string
+interface FormData {
+  username: string, 
+  email: string, 
+  password: string
 }
 
-const AuthInputForm: FC<Props> = ({page}): JSX.Element => {
+interface Props {
+    page: string,
+    formData: FormData,
+    setFormData: React.Dispatch<React.SetStateAction<FormData>>
+    error: boolean,
+   
+}
+
+const AuthInputForm: FC<Props> = ({page, formData, setFormData, error}): JSX.Element => {
   
     const [hidePassword, setHidePassword] = useState(false);
 
+
   return (
-    <Formik
-    initialValues={{ username: "", email:"", password: "" }}
-    onSubmit={(values) => console.log(values)}
-  >
-    {({ handleChange, handleBlur, handleSubmit, values }) => (
+   
       <View>
+       
+
         {/* username */}
         <View style={styles.input}>
           <Image
@@ -28,11 +36,12 @@ const AuthInputForm: FC<Props> = ({page}): JSX.Element => {
           />
           <TextInput
             style={styles.inputField}
-            onChangeText={handleChange("username")}
-            onBlur={handleBlur("username")}
-            value={values.username}
+            onChangeText={(username)=>setFormData({...formData, username:username})}
+            value={formData.username}
             placeholder="Username"
             keyboardType="default"
+            editable={!error}
+            selectTextOnFocus={!error}
           />
         </View>
 
@@ -49,11 +58,12 @@ const AuthInputForm: FC<Props> = ({page}): JSX.Element => {
           />
           <TextInput
             style={styles.inputField}
-            onChangeText={handleChange("email")}
-            onBlur={handleBlur("email")}
-            value={values.email}
+            onChangeText={(email)=>setFormData({...formData, email:email})}
+            value={formData.email}
             placeholder="Email Address"
             keyboardType="default"
+            editable={!error}
+            selectTextOnFocus={!error}
           />
         </View>
 
@@ -70,11 +80,12 @@ const AuthInputForm: FC<Props> = ({page}): JSX.Element => {
           />
           <TextInput
             style={styles.inputField}
-            onChangeText={handleChange("password")}
-            onBlur={handleBlur("password")}
-            // value={values.password}
+            onChangeText={(password)=>setFormData({...formData, password:password})}
+            value={formData.password}
             placeholder="Password"
             secureTextEntry={hidePassword}
+            editable={!error}
+            selectTextOnFocus={!error}
           />
           <TouchableOpacity onPress={() => setHidePassword(!hidePassword)}>
             <Image
@@ -86,10 +97,13 @@ const AuthInputForm: FC<Props> = ({page}): JSX.Element => {
           </TouchableOpacity>
         </View>
       </View>
-    )}
-  </Formik>
+      
+   
+  
   )
+  
 }
+
 const styles = StyleSheet.create({
     
     input: {

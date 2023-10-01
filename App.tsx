@@ -1,5 +1,13 @@
+import { useLayoutEffect, useState } from 'react';
+
 import { NavigationContainer } from '@react-navigation/native';
+import * as SecureStore from 'expo-secure-store';
+
+import { store } from 'redux/store';
+import { Provider } from 'react-redux';
+
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
 import Onboarding from 'screens/Onboarding';
 import Authentication from 'screens/Authentication';
 import ProductsScreen from 'screens/ProductsScreen';
@@ -9,34 +17,58 @@ import CheckoutScreen from 'screens/CheckoutScreen';
 import ProfileScreen from 'screens/ProfileScreen';
 import OrderScreen from 'screens/OrdersScreen';
 
-
-
 const Stack = createNativeStackNavigator();
 
+
+
 export default function App() {
+
+  const [token, setToken] = useState<string|null>(null)
+  
+  useLayoutEffect (()=>{
+     
+    const checkToken =  async() => {
+
+      const data: any = await SecureStore.getItemAsync("userToken");
+      setToken(data)
+
+    }
+
+    checkToken()
+
+  },[])
+
+  
   return (
-    <NavigationContainer>
+    <Provider store={store}>
+      <NavigationContainer>
+
       <Stack.Navigator screenOptions={{ headerShown: false }}>
 
-        <Stack.Screen name="Home" component={Onboarding} />
+        { token === null && 
 
-        <Stack.Screen name="Authentication" component={Authentication} />
+        <Stack.Screen name="Onboarding" component={Onboarding} />
 
-        <Stack.Screen name="Products" component={ProductsScreen} />
+        }
 
-        <Stack.Screen name="Detail" component={ProductDetail} />
+          <Stack.Screen name="Products" component={ProductsScreen} />
 
-        <Stack.Screen name="Cart" component={CartScreen} />
-        
-        <Stack.Screen name="Checkout" component={CheckoutScreen} />
+    
+          <Stack.Screen name="Authentication" component={Authentication} />
 
-        <Stack.Screen name="Profile" component={ProfileScreen} />
+          <Stack.Screen name="Detail" component={ProductDetail} />
 
-        <Stack.Screen name="Orders" component={OrderScreen} />
-        
+          <Stack.Screen name="Cart" component={CartScreen} />
+ 
+          <Stack.Screen name="Checkout" component={CheckoutScreen} />
+
+          <Stack.Screen name="Profile" component={ProfileScreen} />
+
+          <Stack.Screen name="Orders" component={OrderScreen} />
+
       </Stack.Navigator>
-    </NavigationContainer>
+        
+      </NavigationContainer>
+    </Provider>
   );
 }
-
-

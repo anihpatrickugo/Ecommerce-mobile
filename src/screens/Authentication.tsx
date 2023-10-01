@@ -1,6 +1,7 @@
 
 import {FC, useState} from 'react'
-import { View, Text , StyleSheet, SafeAreaView, Image, StatusBar, TouchableOpacity} from 'react-native'
+import { View, Text , StyleSheet, SafeAreaView, Image, StatusBar, TouchableOpacity , ActivityIndicator} from 'react-native'
+import * as SecureStore from 'expo-secure-store';
 import AuthInputForm from 'components/authInputForm'
 
 interface Props {
@@ -10,6 +11,12 @@ interface Props {
 
 const Authentication: FC<Props> = ({navigation}):JSX.Element => {
    const [page, setPage ]= useState<"login"|"register">('login')
+
+   const [loading, setLoading] = useState(false);
+   const [error, setError] = useState(false);
+   const [errorMessage, setErrorMessage] = useState<string|null>(null);
+
+   const [formData, setFormData] = useState({username: "", email:"", password: ""})
 
    const loginExtraStyle: any = {
     color: page === "login" ? "#036BB9" : "#A6A6A6",
@@ -22,36 +29,83 @@ const Authentication: FC<Props> = ({navigation}):JSX.Element => {
     borderBottomWidth: page === "register" ? 3.1 : null,
     borderBottomColor: page === "register" ? "#036BB9" : null,
   };
+
+
+  // login
+  const loginBtn = async () => {
+    setError(false)
+    setLoading(true);
+
+  
+     const { username, password } = formData;
+
+     const req = await fetch(`https://shopgrids.onrender.com/auth/`, {
+        method: "POST",
+        body: JSON.stringify({username, password}),
+        headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    const res = await req.json();
+
+    if (req.ok){
+      await SecureStore.setItemAsync("userToken", res.access)
+      navigation.reset({
+        routes: [{ name: 'Products' }],
+      });
+
+    } else {
+      console.log(res)
+      setErrorMessage(res.error || res.message || res.errors || res.password || res.message ||"Invalid credentials");
+    }
+    setLoading(false);
+  };
+  
   
 
   return (
     <SafeAreaView style={styles.containner}>
+
       <Text style={styles.headingText}>{ page === "login" ? "Login": "Register"}</Text>
       <Text style={styles.subHeading}>By signing { page ==='login' ? 'in'  : 'up'} you are agreeing our <Text style={styles.termsPrivacy}> Term and privacy policy</Text> </Text>
       
+
       {/* auth options */}
       <View style={styles.authOptions}>
         <Text style={[styles.authOptionsText, loginExtraStyle]} 
-            onPress={()=> setPage('login')}>Login</Text>
+            onPress={(()=> !loading && setPage('login'))}>Login</Text>
 
 
         <Text style={[styles.authOptionsText, registerExtraStyle]} 
-            onPress={()=> setPage('register')}>Register</Text>
+            onPress={()=> !loading && setPage('register')}>Register</Text>
       </View>
 
 
       {/* input form */}
       <View style={styles.inputContainner}>
-        <AuthInputForm page={page}/>
+        <AuthInputForm page={page} formData={formData} setFormData={setFormData} error={error}/>
       </View>
 
        {/* button */}
-       <TouchableOpacity
+       {!loading ? <TouchableOpacity
         style={styles.action}
-        onPress={() => navigation.navigate("Products")}
+        onPress={()=> loginBtn()}
       >
-        <Text style={styles.actionText}>{page === 'login'? "Login": "Register"}</Text>
-      </TouchableOpacity>
+          <Text style={styles.actionText}>{page === 'login'? "Login": "Register"}</Text> 
+      </TouchableOpacity> 
+      :
+      <View
+        style={styles.action}
+      >
+           <ActivityIndicator color={"white"} size={"small"}/>
+      </View>
+      
+      }
+
+
+      {/* error */}
+      {errorMessage && <Text style={{color: 'red'}}>{errorMessage}</Text>}
 
       {/* footer background  */}
       <View style={styles.footerLogoContainer}>

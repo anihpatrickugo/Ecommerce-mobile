@@ -1,5 +1,6 @@
 import React, {FC} from 'react'
 import {TouchableOpacity, Text, StyleSheet, Image } from 'react-native'
+
 import ProductProps from 'types/products'
 
 interface Props {
@@ -8,6 +9,9 @@ interface Props {
 }
 
 const TrendingItem: FC<Props> = ({item, navigation}):JSX.Element => {
+
+   
+    
   return (
     <TouchableOpacity style={styles.containner}  onPress={()=>navigation.navigate('Detail', {item})}>
 
@@ -21,7 +25,7 @@ const TrendingItem: FC<Props> = ({item, navigation}):JSX.Element => {
 
         <Image
             style={styles.trendingImage}
-            source={{uri: item.image}}
+            source={{uri: `http://res.cloudinary.com/dmhxcjyna/${item.image}`}}
             height={100}
             width={100}
           />

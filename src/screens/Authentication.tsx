@@ -56,12 +56,54 @@ const Authentication: FC<Props> = ({navigation}):JSX.Element => {
       });
 
     } else {
-      console.log(res)
       setErrorMessage(res.error || res.message || res.errors || res.password || res.message ||"Invalid credentials");
     }
     setLoading(false);
   };
   
+
+  // signup
+  
+  const signupBtn = async () => {
+    setError(false)
+    setLoading(true);
+      
+  
+      const req = await fetch(`https://shopgrids.onrender.com/user/`, {
+        method: "POST",
+        body: JSON.stringify(formData),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+  
+      const res = await req.json();
+  
+      if (req.ok) {
+        setError(false);
+  
+        // log user in
+        const loginReq = await fetch(`https://shopgrids.onrender.com/auth/`, {
+          method: "POST",
+          body: JSON.stringify(formData),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+  
+        const loginRes = await loginReq.json();
+        setLoading(false);
+        await SecureStore.setItemAsync("userToken", loginRes.access)
+         navigation.reset({
+           routes: [{ name: 'Products' }],
+         });
+
+      } else {
+        
+        setErrorMessage(res.error || res.message || res.errors || res.password || res.message ||"Invalid credentials");
+      }
+      setLoading(false);
+    };
   
 
   return (
@@ -90,7 +132,7 @@ const Authentication: FC<Props> = ({navigation}):JSX.Element => {
        {/* button */}
        {!loading ? <TouchableOpacity
         style={styles.action}
-        onPress={()=> loginBtn()}
+        onPress={page === 'login'? loginBtn : signupBtn}
       >
           <Text style={styles.actionText}>{page === 'login'? "Login": "Register"}</Text> 
       </TouchableOpacity> 

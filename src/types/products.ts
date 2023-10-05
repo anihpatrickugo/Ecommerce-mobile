@@ -1,4 +1,3 @@
-import { ImageSourcePropType } from "react-native";
 
 export default interface ProductProps {
     id: number,

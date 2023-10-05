@@ -19,8 +19,6 @@ import OrderScreen from 'screens/OrdersScreen';
 
 const Stack = createNativeStackNavigator();
 
-
-
 export default function App() {
 
   const [token, setToken] = useState<string|null>(null)

@@ -1,16 +1,18 @@
-import React, { FC } from 'react'
+import React, { FC, Dispatch, SetStateAction } from 'react'
 import { TouchableOpacity, Text, StyleSheet } from 'react-native'
 
 
 interface Props {
     id: number,
     name: string,
+    setCategory: Dispatch<SetStateAction<string>> ;
+    
  
 }
 
-const CategoryItem: FC<Props> = ({id, name}): JSX.Element => {
+const CategoryItem: FC<Props> = ({id, name, setCategory}): JSX.Element => {
   return (
-    <TouchableOpacity style={[styles.containner, styles.shadowProp]}>
+    <TouchableOpacity style={[styles.containner, styles.shadowProp]} onPress={()=>setCategory(name)}>
       <Text style={styles.text}>{name}</Text>
     </TouchableOpacity>
   )

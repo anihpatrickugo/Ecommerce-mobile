@@ -1,4 +1,4 @@
-import {FC, useLayoutEffect} from 'react'
+import {FC, useLayoutEffect, useState} from 'react'
 import { 
     SafeAreaView, 
     StyleSheet, 
@@ -12,9 +12,8 @@ import {
 } from 'react-native'
 import * as SecureStore from 'expo-secure-store';
 import { Formik } from 'formik'
-import CategoryItem from 'components/categoryItem'
-import categories from 'const/categories'
-import products from 'const/products'
+import Categories from 'components/Categories';
+import ProductProps from 'types/products';
 import TrendingItem from 'components/trendingItem'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 
@@ -23,6 +22,19 @@ interface Props {
 }
 
 const ProductsScreen:FC<Props> = ({navigation}):JSX.Element => {
+   const [products, setProducts] = useState<ProductProps[]>([])
+   const [category, setCategory] = useState("")
+
+  useLayoutEffect(()=>{
+
+    const getProducts = async () => {
+      const res = await fetch(`https://shopgrids.onrender.com/products/?categories=${category}`);
+      const data = await res.json();
+      setProducts(data);
+    };
+
+    getProducts();
+  },[category])
 
   return (
     <SafeAreaView style={styles.containner}>
@@ -63,18 +75,8 @@ const ProductsScreen:FC<Props> = ({navigation}):JSX.Element => {
       </Formik>
 
       {/* categories */}
-      <View style={styles.categories}>
-      <FlatList 
-              data={categories} 
-              pagingEnabled 
-              bounces={false} 
-              horizontal 
-              showsHorizontalScrollIndicator={false} 
-              renderItem={({item})=> <CategoryItem key={item.id} id={item.id} name={item.name}/>}/>
-
-      </View>
-
-
+      <Categories setCategory={setCategory}/>
+      
       {/* Trending prodiucts */}
       <View style={styles.trending}>
       <Text style={styles.trendingTitle}>Trending Products</Text>
@@ -171,14 +173,6 @@ const styles = StyleSheet.create({
         height: 40,
         padding: 0,
         marginHorizontal: 12,
-      },
-
-      categories: {
-        width: "100%",
-        height: 70,
-        marginVertical: 10,
-        alignItems: "center",
-        paddingVertical: 10,
       },
 
       trending: {

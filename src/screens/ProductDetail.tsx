@@ -8,12 +8,8 @@ import {
   View, 
   Image,
   TouchableOpacity,
-  TextInput,
-  FlatList
 } from 'react-native'
-import DetailCategory from 'components/detailCategory'
-import ProductProps from 'types/products'
-import categories from 'const/categories'
+import Categories from 'components/Categories'
 import products from 'const/products'
 
 interface  Props {
@@ -22,7 +18,7 @@ interface  Props {
 }
 
 const ProductDetail:FC<Props> = ({route, navigation}):JSX.Element => {
-     const {id, name, image, price} = route.params.item
+     const {id, name, image, price, description} = route.params.item
      
 
   return (
@@ -62,7 +58,7 @@ const ProductDetail:FC<Props> = ({route, navigation}):JSX.Element => {
         <View style={styles.imageContainner}>
          <Image
             style={styles.image}
-            source={{uri:image}}
+            source={{uri:`http://res.cloudinary.com/dmhxcjyna/${image}`}}
             height={25}
             width={25}
            />
@@ -77,25 +73,15 @@ const ProductDetail:FC<Props> = ({route, navigation}):JSX.Element => {
         <Text style={styles.itemPrice}>{`₦${price}`}</Text>
       </View>
 
-          {/* categories */}  
-      <View style={styles.categories}>
-      <FlatList 
-              data={categories} 
-              pagingEnabled 
-              bounces={false} 
-              horizontal 
-              showsHorizontalScrollIndicator={false} 
-              renderItem={({item})=> <DetailCategory key={item.id} id={item.id} name={item.name}/>}/>
-
-      </View>
+        {/* categories */}  
+        <Categories setCategory={()=>{}}/>
+      
      
       {/* description */}
       <View style={styles.descriptionContainner}>
          <Text style={styles.descriptionHead}>Description</Text>
          <Text style={styles.description}>
-          hhhdhshjhshh nhchhdhhd hdydhhd hs hdggdjdjd hshshhs hshsjhsj
-          shshhsh hshjjhha hjahjhas hsahhsh hahhsh shsah shhshs shsh 
-          hssjg sggsg shsjgs shhsah shhshs sahhsh
+          {description}
           </Text>
       </View>
 

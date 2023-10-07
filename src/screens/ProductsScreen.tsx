@@ -10,12 +10,14 @@ import {
     TextInput,
     FlatList
 } from 'react-native'
-import * as SecureStore from 'expo-secure-store';
 import { Formik } from 'formik'
 import Categories from 'components/Categories';
 import ProductProps from 'types/products';
 import TrendingItem from 'components/trendingItem'
-import { NativeStackScreenProps } from '@react-navigation/native-stack'
+import type { CartItemState } from 'redux/cartSlice';
+
+import { useSelector} from "react-redux";
+
 
 interface Props {
   navigation: any
@@ -36,8 +38,12 @@ const ProductsScreen:FC<Props> = ({navigation}):JSX.Element => {
     getProducts();
   },[category])
 
+  const cart = useSelector((state: CartItemState[]) => state.length)
+  console.log(cart)
+
   return (
     <SafeAreaView style={styles.containner}>
+
         {/* header */}
       <View style={styles.headerLogoContainer}>
          <Image style={styles.headerLogo} source={require('icons/logo.png')}/>
@@ -110,6 +116,7 @@ const ProductsScreen:FC<Props> = ({navigation}):JSX.Element => {
             height={25}
             width={25}
           />
+          <Text style={styles.cartQuantity}>{cart}</Text>
           </TouchableOpacity>
 
           <TouchableOpacity  onPress={()=>navigation.navigate('Profile')}>
@@ -199,7 +206,16 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         justifyContent: "space-around",
         alignItems: 'center'
-      }
+      },
+      cartQuantity: {
+        backgroundColor: 'red',
+        color: 'white',
+        paddingHorizontal: 5,
+        position: 'absolute',
+        top: 0,
+        right: 0,
+        borderRadius: 5
+      },
 
 
 })

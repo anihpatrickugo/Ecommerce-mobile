@@ -1,6 +1,9 @@
 import React, {FC} from 'react'
 import {TouchableOpacity, Text, StyleSheet, Image } from 'react-native'
 
+import { useDispatch} from 'react-redux';
+import { addToCart } from 'redux/cartSlice'; 
+
 import ProductProps from 'types/products'
 
 interface Props {
@@ -9,6 +12,8 @@ interface Props {
 }
 
 const TrendingItem: FC<Props> = ({item, navigation}):JSX.Element => {
+
+    const dispatch = useDispatch()
 
    
     
@@ -32,7 +37,7 @@ const TrendingItem: FC<Props> = ({item, navigation}):JSX.Element => {
       <Text style={styles.price}>{`₦${item.price}`}</Text>
       <Text style={styles.name}>{item.name}</Text>
 
-      <TouchableOpacity style={styles.addToCart}>
+      <TouchableOpacity style={styles.addToCart} onPress={()=>dispatch(addToCart(item))}>
           <Text style={styles.addToCartText}>Add To Cart</Text>
       </TouchableOpacity>
       

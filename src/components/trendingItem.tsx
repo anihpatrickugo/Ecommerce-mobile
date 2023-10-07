@@ -1,8 +1,9 @@
+import { addComma } from 'hooks';
 import React, {FC} from 'react'
 import {TouchableOpacity, Text, StyleSheet, Image } from 'react-native'
 
-import { useDispatch} from 'react-redux';
-import { addToCart } from 'redux/cartSlice'; 
+import { useDispatch, useSelector} from 'react-redux';
+import { CartItemProps, addToCart, removeFromCart } from 'redux/cartSlice'; 
 
 import ProductProps from 'types/products'
 
@@ -14,6 +15,10 @@ interface Props {
 const TrendingItem: FC<Props> = ({item, navigation}):JSX.Element => {
 
     const dispatch = useDispatch()
+
+    const cart = useSelector((state:any) => state.cart)
+
+    const isInCart = cart.find((cartItem: CartItemProps) => cartItem.id == item.id);
 
    
     
@@ -34,12 +39,20 @@ const TrendingItem: FC<Props> = ({item, navigation}):JSX.Element => {
             height={100}
             width={100}
           />
-      <Text style={styles.price}>{`₦${item.price}`}</Text>
+      <Text style={styles.price}>{`₦${addComma(item.price)}`}</Text>
       <Text style={styles.name}>{item.name}</Text>
 
-      <TouchableOpacity style={styles.addToCart} onPress={()=>dispatch(addToCart(item))}>
+      {!isInCart ? 
+        (
+        <TouchableOpacity style={styles.addToCart} onPress={()=>dispatch(addToCart(item))}>
           <Text style={styles.addToCartText}>Add To Cart</Text>
-      </TouchableOpacity>
+        </TouchableOpacity>
+        ):(
+            <TouchableOpacity style={styles.addToCart} onPress={()=>dispatch(removeFromCart(item))}>
+            <Text style={styles.addToCartText}>Remove From Cart</Text>
+           </TouchableOpacity>
+        )}
+     
       
     </TouchableOpacity>
   )

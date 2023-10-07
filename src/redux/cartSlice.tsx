@@ -2,8 +2,9 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import type { RootState } from './store'
 import ProductProps from 'types/products'
 
+
 // Define a type for the slice state
-export interface CartItemState {
+export interface CartItemProps {
     id: number,
     url: string,
     image: string,
@@ -14,7 +15,7 @@ export interface CartItemState {
 
 
 // Define the initial state using that type
-const initialState: CartItemState[] = [
+const initialState: CartItemProps[] = [
 
 ]
 
@@ -45,18 +46,18 @@ export const cartSlice = createSlice({
         return state.filter((product) => product.id !== action.payload.id);
     },
 
-    addQuantity: (state, action: PayloadAction<ProductProps>)=>{
+    addQuantity: (state, action: PayloadAction<CartItemProps>)=>{
         return state.map((product) =>
         product.id == action.payload.id
-          ? { ...product, quantity: product.quantity++ }
+          ? { ...product, quantity: product.quantity+1 }
           : product
       );
     },
 
-    removeQuantity: (state, action: PayloadAction<ProductProps>)=>{
+    removeQuantity: (state, action: PayloadAction<CartItemProps>)=>{
         return state.map((product) =>
         product.id == action.payload.id
-          ? { ...product, quantity: Math.max(1, product.quantity--) }
+          ? { ...product, quantity: Math.max(1, product.quantity-1) }
           : product
       );
     },
@@ -79,6 +80,6 @@ export const cartSlice = createSlice({
 export const { addToCart, removeFromCart, addQuantity, removeQuantity} = cartSlice.actions
 
 // Other code such as selectors can use the imported `RootState` type
-export const selectCount = (state: RootState) => state
+export const selectCart = (state: RootState) => state
 
 export default cartSlice.reducer

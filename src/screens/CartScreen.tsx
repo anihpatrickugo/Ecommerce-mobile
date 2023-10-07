@@ -1,7 +1,6 @@
 import React, {FC, useState} from 'react'
 import { 
   SafeAreaView , 
-  ScrollView,
   StatusBar, 
   StyleSheet, 
   Text, 
@@ -11,8 +10,13 @@ import {
   TextInput,
   FlatList
 } from 'react-native'
+
+import { useSelector} from 'react-redux';
+import { CartItemProps } from 'redux/cartSlice';
+
 import CartItem from '../components/cartItem'
-import products from 'const/products'
+import { addComma } from 'hooks';
+
 
 
 interface  Props {
@@ -22,6 +26,14 @@ interface  Props {
 const CartScreen:FC<Props> = ({navigation}):JSX.Element => {
      
      const [coupon, setCoupon] = useState('')
+
+    const cart = useSelector((state:any) => state.cart)
+    
+    const totalPrice = cart.reduce(
+      (prevValue:number, currentValue:CartItemProps) =>
+        prevValue + currentValue.price * currentValue.quantity,
+      0
+    );
 
   return (
     <SafeAreaView style={styles.containner}>
@@ -50,7 +62,7 @@ const CartScreen:FC<Props> = ({navigation}):JSX.Element => {
             height={500}
             width={500}
           />
-          <Text style={styles.cartQuantity}>2</Text>
+          {cart.length > 0 && <Text style={styles.cartQuantity}>{cart.length}</Text>}
       </TouchableOpacity>
 
       </View>
@@ -60,14 +72,19 @@ const CartScreen:FC<Props> = ({navigation}):JSX.Element => {
         <Text style={styles.cartTittle}>My Cart</Text>
 
         {/* cart list */}
-        <FlatList 
-              style={styles.cartList}
-              data={products} 
-              pagingEnabled 
-              bounces={false} 
-              showsVerticalScrollIndicator={false} 
-              renderItem={({item})=> <CartItem key={item.id} item={item}/>}
-        />
+        { cart.length > 0 ? (
+          <FlatList 
+                style={styles.cartList}
+                data={cart} 
+                pagingEnabled 
+                bounces={false} 
+                showsVerticalScrollIndicator={false} 
+                renderItem={({item})=> <CartItem key={item.id} item={item}/>}
+          />
+
+        ): (
+          <Text style={styles.emptyCartText}>Your Cart Is Empty</Text>
+        )}
 
 
        {/* cart summmary */}
@@ -75,18 +92,20 @@ const CartScreen:FC<Props> = ({navigation}):JSX.Element => {
 
         <View style={styles.summaryRow}>
             <Text style={styles.summaryKey}>No of Items</Text>
-            <Text style={styles.summaryValue}>2</Text>
+            <Text style={styles.summaryValue}>{cart.length}</Text>
         </View>
 
         <View style={styles.summaryRow}>
             <Text style={styles.summaryKey}>Total Price</Text>
-            <Text style={styles.summaryValue}>₦14,000</Text>
+            <Text style={styles.summaryValue}>₦{addComma(totalPrice)}</Text>
         </View>
 
        </View>
 
 
        {/* coupon */}
+       {cart.length > 0 && (
+
        <View style={styles.cartSummary}>
 
         <View style={styles.summaryRow}>
@@ -95,13 +114,16 @@ const CartScreen:FC<Props> = ({navigation}):JSX.Element => {
         </View>
 
        </View>
+       )}
         
 
       {/* button */}
+      {cart.length > 0 && (
       <TouchableOpacity style={styles.button} onPress={()=>navigation.navigate('Checkout')}>
         <Text style={styles.buttonText}>Proceed To Checkout</Text>
       </TouchableOpacity>
-           
+          
+      )}
       </View>
     </SafeAreaView>
   )
@@ -175,6 +197,14 @@ const styles = StyleSheet.create({
   cartList: {
     width: "100%",
     height: 250
+  },
+
+  emptyCartText:{
+    textAlign: 'center',
+    fontSize: 24,
+    fontWeight: "bold",
+    marginVertical: 100,
+    color: 'red'
   },
 
 

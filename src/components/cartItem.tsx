@@ -7,21 +7,30 @@ import {
     TouchableOpacity,
    
   } from 'react-native'
-  import ProductProps from 'types/products'
+
+import { useDispatch, useSelector} from 'react-redux';
+import { CartItemProps, addQuantity, removeQuantity, removeFromCart } from 'redux/cartSlice'
+import { addComma } from 'hooks';
+
 
 
 interface Props {
-    item: ProductProps
+    item: CartItemProps
 }
 
 const cartItem: FC<Props> = ({item}):JSX.Element => {
+
+   const dispatch = useDispatch()
+    const cart = useSelector((state:any) => state.cart)
+    const isInCart = cart.find((cartItem: CartItemProps) => cartItem.id == item.id);
+
   return (
        <View style={styles.cartItem}>
 
        <View  style={styles.cartImageContainner}>
           <Image
            style={styles.cartImage}
-           source={{uri: item.image}}
+           source={{uri: `http://res.cloudinary.com/dmhxcjyna/${item.image}`}}
            height={500}
            width={500}
            />
@@ -31,25 +40,26 @@ const cartItem: FC<Props> = ({item}):JSX.Element => {
       <View style={styles.cartItemDetails}>
 
         <Text style={styles.cartItemName}>{item.name}</Text>
-        <Text style={styles.cartItemPrice}>{`₦${item.price}`}</Text>
+        <Text style={styles.cartItemPrice}>{`₦${addComma(item.price)}`}</Text>
       </View>
 
       
       <View style={styles.cartItemQuantity}>
 
-       <TouchableOpacity>
+       <TouchableOpacity onPress={()=>dispatch(removeQuantity(item))}>
          <Text style={styles.quantityBtn}>-</Text>
        </TouchableOpacity>
        
-       <Text style={styles.quantityBtn}>1</Text>
+       <Text style={styles.quantityBtn}>{item.quantity}</Text>
 
-       <TouchableOpacity>
+       <TouchableOpacity onPress={()=>dispatch(addQuantity(item))}>
           <Text style={styles.quantityBtn}>+</Text>
        </TouchableOpacity>
        
       </View>
 
-      <Text style={styles.removeBtn}>X</Text>
+
+      <Text style={styles.removeBtn} onPress={()=>dispatch(removeFromCart(item))}>X</Text>
 
       </View>
   )
@@ -100,7 +110,7 @@ const styles = StyleSheet.create({
     
       cartItemQuantity:{
         height: 40,
-        width: 90,
+        width: 80,
         flexDirection: "row",
         justifyContent: 'space-around',
         alignSelf: "flex-end",

@@ -17,6 +17,7 @@ import TrendingItem from 'components/trendingItem'
 import type { CartItemState } from 'redux/cartSlice';
 
 import { useSelector} from "react-redux";
+import { selectCart } from 'redux/cartSlice';
 
 
 interface Props {
@@ -38,8 +39,8 @@ const ProductsScreen:FC<Props> = ({navigation}):JSX.Element => {
     getProducts();
   },[category])
 
-  const cart = useSelector((state: CartItemState[]) => state.length)
-  console.log(cart)
+  // const cart = selectCart.length
+  const cartLength = useSelector((state:any) => state.cart.length)
 
   return (
     <SafeAreaView style={styles.containner}>
@@ -116,7 +117,7 @@ const ProductsScreen:FC<Props> = ({navigation}):JSX.Element => {
             height={25}
             width={25}
           />
-          <Text style={styles.cartQuantity}>{cart}</Text>
+          {cartLength > 0 && <Text style={styles.cartQuantity}>{cartLength}</Text>}
           </TouchableOpacity>
 
           <TouchableOpacity  onPress={()=>navigation.navigate('Profile')}>

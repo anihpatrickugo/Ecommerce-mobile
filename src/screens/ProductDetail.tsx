@@ -9,8 +9,12 @@ import {
   Image,
   TouchableOpacity,
 } from 'react-native'
+
+import { useDispatch, useSelector} from 'react-redux';
+import { CartItemProps, addToCart, removeFromCart } from 'redux/cartSlice'; 
+
 import Categories from 'components/Categories'
-import products from 'const/products'
+
 
 interface  Props {
   route: any,
@@ -18,7 +22,11 @@ interface  Props {
 }
 
 const ProductDetail:FC<Props> = ({route, navigation}):JSX.Element => {
-     const {id, name, image, price, description} = route.params.item
+     const item = route.params.item
+     
+    const dispatch = useDispatch()
+    const cart = useSelector((state:any) => state.cart)
+    const isInCart = cart.find((cartItem: CartItemProps) => cartItem.id == item.id);
      
 
   return (
@@ -41,14 +49,14 @@ const ProductDetail:FC<Props> = ({route, navigation}):JSX.Element => {
           />
       </TouchableOpacity>
 
-      <TouchableOpacity onPress={()=>navigation.navigate('Cart', {item:products})}>
+      <TouchableOpacity onPress={()=>navigation.navigate('Cart', {item})}>
           <Image
             style={styles.icon}
             source={require("../icons/heart.png")}
             height={500}
             width={500}
           />
-          <Text style={styles.cartQuantity}>0</Text>
+        {cart.length > 0 && <Text style={styles.cartQuantity}>{cart.length}</Text>}
       </TouchableOpacity>
 
       </View>
@@ -58,7 +66,7 @@ const ProductDetail:FC<Props> = ({route, navigation}):JSX.Element => {
         <View style={styles.imageContainner}>
          <Image
             style={styles.image}
-            source={{uri:`http://res.cloudinary.com/dmhxcjyna/${image}`}}
+            source={{uri:`http://res.cloudinary.com/dmhxcjyna/${item.image}`}}
             height={25}
             width={25}
            />
@@ -69,8 +77,8 @@ const ProductDetail:FC<Props> = ({route, navigation}):JSX.Element => {
 
       {/* name and price */}
       <View style={styles.nameAndPrice}>
-        <Text style={styles.itemName}>{name}</Text>
-        <Text style={styles.itemPrice}>{`₦${price}`}</Text>
+        <Text style={styles.itemName}>{item.name}</Text>
+        <Text style={styles.itemPrice}>{`₦${item.price}`}</Text>
       </View>
 
         {/* categories */}  
@@ -81,14 +89,21 @@ const ProductDetail:FC<Props> = ({route, navigation}):JSX.Element => {
       <View style={styles.descriptionContainner}>
          <Text style={styles.descriptionHead}>Description</Text>
          <Text style={styles.description}>
-          {description}
+          {item.description}
           </Text>
       </View>
 
       {/* button */}
-      <TouchableOpacity style={styles.button}>
-        <Text style={styles.buttonText}>Add To Cart</Text>
+      {!isInCart ? (
+         <TouchableOpacity style={styles.button} onPress={()=>dispatch(addToCart(item))}>
+            <Text style={styles.buttonText}>Add To Cart</Text>
+        </TouchableOpacity>
+      ): (
+        <TouchableOpacity style={styles.button} onPress={()=>dispatch(removeFromCart(item))}>
+        <Text style={styles.buttonText}>Remove From Cart</Text>
       </TouchableOpacity>
+      )}
+     
            
       </ScrollView>
     </SafeAreaView>

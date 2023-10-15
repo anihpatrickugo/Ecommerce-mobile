@@ -3,6 +3,9 @@ import {FC, useState} from 'react'
 import { View, Text , StyleSheet, SafeAreaView, Image, StatusBar, TouchableOpacity , ActivityIndicator} from 'react-native'
 import * as SecureStore from 'expo-secure-store';
 import AuthInputForm from 'components/authInputForm'
+import { useDispatch } from 'react-redux';
+import { addAuthToken } from 'redux/authSlice';
+
 
 interface Props {
     navigation: any
@@ -30,6 +33,8 @@ const Authentication: FC<Props> = ({navigation}):JSX.Element => {
     borderBottomColor: page === "register" ? "#036BB9" : null,
   };
 
+  const dispatch = useDispatch()
+
 
   // login
   const loginBtn = async () => {
@@ -51,6 +56,7 @@ const Authentication: FC<Props> = ({navigation}):JSX.Element => {
 
     if (req.ok){
       await SecureStore.setItemAsync("userToken", res.access)
+      dispatch(addAuthToken(res.access))
       navigation.reset({
         routes: [{ name: 'Products' }],
       });

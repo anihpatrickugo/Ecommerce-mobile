@@ -1,41 +1,44 @@
-import { createSlice } from '@reduxjs/toolkit'
-import type { PayloadAction } from '@reduxjs/toolkit'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import type { RootState } from './store'
+import * as SecureStore from 'expo-secure-store';
 
 
-// export interface UserType {
-//   email: string,
-//   username: string
-// }
 
-
+// Define a type for the slice state
 export interface AuthType {
-  token: string | null,
+    token: string|null,
+    
 }
 
+
+// Define the initial state using that type
 const initialState: AuthType = {
-  token: null,
- 
+  token: null
 }
+
+
 
 export const authSlice = createSlice({
-  name: 'user',
+  name: 'authToken',
+  // `createSlice` will infer the state type from the `initialState` argument
   initialState,
-
   reducers: {
-    seAuthInfo: (state, action) => {
-          state.token = action.payload
-    },
-    removeAuthInfo: (state) => {
-      state.token = null
+    
+    // Use the PayloadAction type to declare the contents of `action.payload`
+    addAuthToken: (state, action: PayloadAction<string>) => {
+        return {token: action.payload}
     },
 
-    // incrementByAmount: (state, action: PayloadAction<number>) => {
-    //   state. += action.payload
-    // },
-  },
+    removeAuthToken: (state)=>{
+        return {token: null}
+    },
+
+  }
 })
 
-// Action creators are generated for each case reducer function
-export const { seAuthInfo, removeAuthInfo} = authSlice.actions
+export const { addAuthToken, removeAuthToken} = authSlice.actions
+
+// Other code such as selectors can use the imported `RootState` type
+export const selectAuthToken = (state: RootState) => state
 
 export default authSlice.reducer

@@ -15,6 +15,8 @@ import * as SecureStore from 'expo-secure-store';
 
 import type { RootState } from 'redux/store'
 import { useSelector, useDispatch } from 'react-redux'
+import { removeAuthToken } from 'redux/authSlice';
+import { emptyCart } from 'redux/cartSlice';
 // import { decrement, increment } from 'redux/authSlice'
 
 
@@ -40,8 +42,10 @@ const ProfileScreen:FC<Props> = ({navigation}):JSX.Element => {
 
       {
         text: 'Yes',
-        onPress: () => {
-          SecureStore.deleteItemAsync("userToken")
+        onPress: async() => {
+          await SecureStore.deleteItemAsync("userToken")
+          dispatch(removeAuthToken())
+          dispatch(emptyCart())
           navigation.reset({
               routes: [{ name: 'Authentication' }],
             });

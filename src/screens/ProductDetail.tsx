@@ -14,6 +14,7 @@ import { useDispatch, useSelector} from 'react-redux';
 import { CartItemProps, addToCart, removeFromCart } from 'redux/cartSlice'; 
 
 import Categories from 'components/Categories'
+import { addComma } from 'hooks';
 
 
 interface  Props {
@@ -78,7 +79,7 @@ const ProductDetail:FC<Props> = ({route, navigation}):JSX.Element => {
       {/* name and price */}
       <View style={styles.nameAndPrice}>
         <Text style={styles.itemName}>{item.name}</Text>
-        <Text style={styles.itemPrice}>{`₦${item.price}`}</Text>
+        <Text style={styles.itemPrice}>{`₦${addComma(item.price)}`}</Text>
       </View>
 
         {/* categories */}  

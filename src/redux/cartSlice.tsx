@@ -27,7 +27,7 @@ export const cartSlice = createSlice({
   initialState,
   reducers: {
     
-    // Use the PayloadAction type to declare the contents of `action.payload`
+    // this add a particular item to the cart
     addToCart: (state, action: PayloadAction<ProductProps>) => {
 
         const newItem = {
@@ -42,10 +42,13 @@ export const cartSlice = createSlice({
         return [newItem,  ...state]
     },
 
+    // this remove a particular item from cart
     removeFromCart: (state, action: PayloadAction<ProductProps>)=>{
         return state.filter((product) => product.id !== action.payload.id);
     },
 
+
+    // this increases the quantity of any particular item in cart by 1
     addQuantity: (state, action: PayloadAction<CartItemProps>)=>{
         return state.map((product) =>
         product.id == action.payload.id
@@ -54,6 +57,8 @@ export const cartSlice = createSlice({
       );
     },
 
+
+    // this decreases the quantity of any particular item in cart by 1
     removeQuantity: (state, action: PayloadAction<CartItemProps>)=>{
         return state.map((product) =>
         product.id == action.payload.id
@@ -62,13 +67,19 @@ export const cartSlice = createSlice({
       );
     },
 
-    // editQuantity: (state, action: PayloadAction<CartItemState>)=>{
+
+    // editQuantity: (state, action: PayloadAction<CartItemProps>)=>{
     //     return state.map((product) =>
     //     product.id == action.payload.id
-    //       ? { ...product, quantity: action.value }
+    //       ? { ...product, quantity: action.payload }
     //       : product
     //   );
     // }
+
+    // this empties the whole cart
+    emptyCart: (state)=>[]
+
+    
 
 
 
@@ -77,7 +88,7 @@ export const cartSlice = createSlice({
   }
 })
 
-export const { addToCart, removeFromCart, addQuantity, removeQuantity} = cartSlice.actions
+export const { addToCart, removeFromCart, addQuantity, removeQuantity, emptyCart} = cartSlice.actions
 
 // Other code such as selectors can use the imported `RootState` type
 export const selectCart = (state: RootState) => state

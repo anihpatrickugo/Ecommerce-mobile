@@ -13,7 +13,7 @@ interface Props {
 const CategoryItem: FC<Props> = ({id, name, setCategory}): JSX.Element => {
   return (
     <TouchableOpacity style={[styles.containner, styles.shadowProp]} onPress={()=>setCategory(name)}>
-      <Text style={styles.text}>{name}</Text>
+      <Text style={styles.text}>{name===""? 'All': name}</Text>
     </TouchableOpacity>
   )
 }

@@ -8,16 +8,17 @@ import {
     View, 
     Text,
     TextInput,
-    FlatList
+    FlatList,
+    ActivityIndicator
 } from 'react-native'
 import { Formik } from 'formik'
 import Categories from 'components/Categories';
 import ProductProps from 'types/products';
 import TrendingItem from 'components/trendingItem'
-import type { CartItemState } from 'redux/cartSlice';
+// import type { CartItemState } from 'redux/cartSlice';
 
 import { useSelector} from "react-redux";
-import { selectCart } from 'redux/cartSlice';
+
 
 
 interface Props {
@@ -27,6 +28,8 @@ interface Props {
 const ProductsScreen:FC<Props> = ({navigation}):JSX.Element => {
    const [products, setProducts] = useState<ProductProps[]>([])
    const [category, setCategory] = useState("")
+
+   
 
   useLayoutEffect(()=>{
 
@@ -87,13 +90,19 @@ const ProductsScreen:FC<Props> = ({navigation}):JSX.Element => {
       {/* Trending prodiucts */}
       <View style={styles.trending}>
       <Text style={styles.trendingTitle}>Trending Products</Text>
-      <FlatList 
-              data={products} 
-              pagingEnabled 
-              bounces={false} 
-              horizontal 
-              showsHorizontalScrollIndicator={false} 
-              renderItem={({item})=> <TrendingItem key={item.id} item={item} navigation={navigation}/>}/>
+
+      { products.length > 0 ? (
+         <FlatList 
+         data={products} 
+         pagingEnabled 
+         bounces={false} 
+         horizontal 
+         showsHorizontalScrollIndicator={false} 
+         renderItem={({item})=> <TrendingItem key={item.id} item={item} navigation={navigation}/>}/>
+      ): (
+        <ActivityIndicator size='large' color="#037EEE" />
+      )}
+      
 
       </View>
 

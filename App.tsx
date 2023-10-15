@@ -5,6 +5,7 @@ import * as SecureStore from 'expo-secure-store';
 
 import { store } from 'redux/store';
 import { Provider } from 'react-redux';
+import { useSelector, useDispatch} from "react-redux";
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
@@ -16,19 +17,34 @@ import CartScreen from 'screens/CartScreen';
 import CheckoutScreen from 'screens/CheckoutScreen';
 import ProfileScreen from 'screens/ProfileScreen';
 import OrderScreen from 'screens/OrdersScreen';
+import { addAuthToken } from 'redux/authSlice';
 
 const Stack = createNativeStackNavigator();
 
-export default function App() {
 
-  const [token, setToken] = useState<string|null>(null)
+export default function AppWrapper ()  {
+  
+  return (
+    <Provider store={store}> 
+      <App /> 
+    </Provider>
+  )
+}
+
+ function App() {
+  
+  let token = useSelector((state:any) => state.user.token)
+  const dispatch = useDispatch()
+
+ 
   
   useLayoutEffect (()=>{
      
     const checkToken =  async() => {
 
       const data: any = await SecureStore.getItemAsync("userToken");
-      setToken(data)
+      dispatch(addAuthToken(data))
+      
 
     }
 
@@ -38,7 +54,7 @@ export default function App() {
 
   
   return (
-    <Provider store={store}>
+    // <Provider store={store}>
       <NavigationContainer>
 
       <Stack.Navigator screenOptions={{ headerShown: false }}>
@@ -56,7 +72,7 @@ export default function App() {
 
           <Stack.Screen name="Detail" component={ProductDetail} />
 
-          <Stack.Screen name="Cart" component={CartScreen} />
+          <Stack.Screen name="Cart" component={CartScreen} initialParams={{token}} />
  
           <Stack.Screen name="Checkout" component={CheckoutScreen} />
 
@@ -67,6 +83,6 @@ export default function App() {
       </Stack.Navigator>
         
       </NavigationContainer>
-    </Provider>
+    // </Provider>
   );
 }

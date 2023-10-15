@@ -14,6 +14,8 @@ export interface Props {
 const Categories: FC<Props> = ({setCategory}):JSX.Element => {
 
     const [categories, setCategories]= useState<CategoryProps[]>([])
+
+    const allCategories = [{id: 0, name: ""}, ...categories]
    
     useLayoutEffect(()=>{
 
@@ -29,7 +31,7 @@ const Categories: FC<Props> = ({setCategory}):JSX.Element => {
   return (
     <View style={styles.categories}>
     <FlatList 
-            data={categories} 
+            data={allCategories} 
             pagingEnabled 
             bounces={false} 
             horizontal 

@@ -8,7 +8,8 @@ import {
   Image,
   TouchableOpacity,
   TextInput,
-  FlatList
+  FlatList,
+  ActivityIndicator
 } from 'react-native'
 
 import { useSelector} from 'react-redux';
@@ -25,15 +26,53 @@ interface  Props {
 
 const CartScreen:FC<Props> = ({navigation}):JSX.Element => {
      
-     const [coupon, setCoupon] = useState('')
+    const [coupon, setCoupon] = useState('')
+
+    const [loading, setLoading] = useState(false);
+    const [errorMessage, setErrorMessage] = useState<string|null>(null);
 
     const cart = useSelector((state:any) => state.cart)
+    const token = useSelector((state:any) => state.user.token)
+
     
     const totalPrice = cart.reduce(
       (prevValue:number, currentValue:CartItemProps) =>
         prevValue + currentValue.price * currentValue.quantity,
       0
     );
+
+
+    const submitCart = async () => {
+      setLoading(true);
+  
+      const req = await fetch(`https://shopgrids.onrender.com/orders/`, {
+        method: "POST",
+        body: JSON.stringify({ products: cart, coupon }),
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+  
+      const res = await req.json();
+  
+      if (req.ok) {
+        setLoading(false);
+        setErrorMessage(null);
+        navigation.navigate('Checkout');
+      } else {
+        // console.log(res)
+        // console.log(token)
+        setLoading(false);
+        setErrorMessage(
+          res.message ||
+            res.errors ||
+            res.coupon ||
+            "An error occured please try again"
+        );
+      }
+    };
+  
 
   return (
     <SafeAreaView style={styles.containner}>
@@ -110,21 +149,31 @@ const CartScreen:FC<Props> = ({navigation}):JSX.Element => {
 
         <View style={styles.summaryRow}>
             <Text style={styles.summaryKey}>Enter Coupon</Text>
-            <TextInput style={styles.CouponField} value={coupon} onChangeText={(e)=>setCoupon(e)} placeholder='Optional'/>
+            <TextInput style={styles.CouponField} value={coupon} onChangeText={(e)=>setCoupon(e)} placeholder='Optional' />
+            
         </View>
-
+        {errorMessage  && <Text style={{textAlign: "center", color: 'red', fontSize: 10}}>{errorMessage}</Text>}
        </View>
        )}
         
+       
 
       {/* button */}
-      {cart.length > 0 && (
-      <TouchableOpacity style={styles.button} onPress={()=>navigation.navigate('Checkout')}>
+      {cart.length > 0 && ( !loading ? (
+        <TouchableOpacity style={styles.button} onPress={()=>submitCart()}>
         <Text style={styles.buttonText}>Proceed To Checkout</Text>
       </TouchableOpacity>
-          
+      ): (
+        <TouchableOpacity style={styles.button} >
+        <ActivityIndicator size="small" color="white"/>
+      </TouchableOpacity>
+      )
+      
+    
       )}
       </View>
+
+      
     </SafeAreaView>
   )
 }
@@ -221,7 +270,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: "space-between",
     alignItems: 'center',
-    marginVertical: 5
+    marginVertical: 2
   },
 
   summaryKey:{
@@ -246,7 +295,7 @@ const styles = StyleSheet.create({
   },
 
   button: {
-    marginVertical: 16,
+    marginVertical: 10,
     backgroundColor: '#037EEE',
     width: '50%',
     alignItems: 'center',
